@@ -95,10 +95,14 @@ export const signin = async (req: Request, res: Response) => {
 };
 
 export const signout = async (req: Request, res: Response) => {
-  res.clearCookie("cookieData", { path: "/" }).send();
-  res.status(200).json({
-    message: "Logout Successful",
+  res.clearCookie("cookieData", {
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none", // ==
   });
+
+  res.status(200).json({ message: "Logout Successful" });
   return;
 };
 
